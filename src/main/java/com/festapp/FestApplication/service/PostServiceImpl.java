@@ -1,12 +1,16 @@
 package com.festapp.FestApplication.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.festapp.FestApplication.dto.CommentDTO;
 import com.festapp.FestApplication.dto.PostDTO;
+import com.festapp.FestApplication.dto.PostListDTO;
+import com.festapp.FestApplication.dto.ReactionDTO;
 import com.festapp.FestApplication.models.Comment;
 import com.festapp.FestApplication.models.Post;
 import com.festapp.FestApplication.models.User;
@@ -22,6 +26,50 @@ public class PostServiceImpl implements PostService {
 	private final PostRepository postRepository;
 	private final UserRepository userRepository;
 	private final CommentRepository commentRepository;
+	
+	
+	private PostListDTO convertToPostListDTO(Post post) {
+        PostListDTO postListDTO = new PostListDTO();
+        postListDTO.setId(post.getId());
+        postListDTO.setContent(post.getContent());
+        postListDTO.setMediaUrl(post.getMediaUrl());
+        postListDTO.setTags(post.getTags());
+        postListDTO.setUser(post.getUser().getUsername());
+        postListDTO.setUserId(post.getUser().getId());
+        postListDTO.setCreationDate(post.getCreationDate());
+
+        // Setovanje korisničkog imena
+        postListDTO.setUser(post.getUser().getUsername());
+
+        // Setovanje komentara
+        List<CommentDTO> commentDTOList = post.getComments().stream()
+            .map(comment -> {
+                CommentDTO commentDTO = new CommentDTO();
+                commentDTO.setId(comment.getId());
+                commentDTO.setContent(comment.getContent());
+                commentDTO.setUsername(comment.getUser().getUsername());
+                commentDTO.setUserID(comment.getUser().getId());
+                return commentDTO;
+            })
+            .collect(Collectors.toList());
+        postListDTO.setComments(commentDTOList);
+
+        // Setovanje reakcija
+        List<ReactionDTO> reactionDTOList = post.getReactions().stream()
+            .map(reaction -> {
+                ReactionDTO reactionDTO = new ReactionDTO();
+                reactionDTO.setId(reaction.getId());
+                reactionDTO.setType(reaction.getType().toString()); 
+                reactionDTO.setUsername(reaction.getUser().getUsername());
+                reactionDTO.setUserID(reaction.getUser().getId());
+                return reactionDTO;
+            })
+            .collect(Collectors.toList());
+        postListDTO.setReactions(reactionDTOList);
+
+        return postListDTO;
+    }
+
 	
 	
 	@Autowired
@@ -43,13 +91,15 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<Post> getAllPostsByUsers(List<User> users) {
-		List<Post> allPosts = new ArrayList<>();
-		for (User user : users) {
-			allPosts.addAll(postRepository.findByUserId(user.getId()));
-		}
-		return allPosts;
-	}
+    public List<PostListDTO> getAllPostsByUsers(List<User> users) {
+        List<Long> userIds = users.stream().map(User::getId).collect(Collectors.toList());
+
+        List<Post> posts = postRepository.findByUserIdIn(userIds);
+
+        return posts.stream()
+            .map(this::convertToPostListDTO)
+            .collect(Collectors.toList());
+    }
 
 	@Override
 	public Post createPost(PostDTO postRequest) {

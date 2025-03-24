@@ -1,22 +1,20 @@
 package com.festapp.FestApplication.dto;
 
-import com.festapp.FestApplication.models.Comment;
-
-public class CommentDTO {
+public class ReactionDTO {
 	private Long id;
-	private String content;
+	private String type;
 	private String username;
 	private Long userID;
 
-	public CommentDTO() {
-
+	// Konstruktor
+	public ReactionDTO(Long id, String type, String username, Long userID) {
+		this.id = id;
+		this.type = type;
+		this.username = username;
+		this.userID = userID;
 	}
 
-	public CommentDTO(Comment comment) {
-		this.id = comment.getId();
-		this.content = comment.getContent();
-		this.username = comment.getUser().getUsername();
-		this.userID = comment.getUser().getId();
+	public ReactionDTO() {
 	}
 
 	public Long getId() {
@@ -27,12 +25,13 @@ public class CommentDTO {
 		this.id = id;
 	}
 
-	public String getContent() {
-		return content;
+	// Getteri i setteri
+	public String getType() {
+		return type;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public String getUsername() {
@@ -50,5 +49,4 @@ public class CommentDTO {
 	public void setUserID(Long userID) {
 		this.userID = userID;
 	}
-
 }

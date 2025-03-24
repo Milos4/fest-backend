@@ -1,6 +1,8 @@
 package com.festapp.FestApplication.models;
 
 import jakarta.persistence.*;
+
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -32,7 +34,7 @@ public class Post {
 
 
     @Temporal(TemporalType.TIMESTAMP)
-    private java.util.Date creationDate;
+    private Date creationDate;
     public Post() {
         this.creationDate = new java.util.Date();
     }

@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.festapp.FestApplication.dto.PostDTO;
+import com.festapp.FestApplication.dto.PostListDTO;
 import com.festapp.FestApplication.models.Post;
 import com.festapp.FestApplication.models.User;
 import com.festapp.FestApplication.service.FollowerService;
@@ -38,12 +39,12 @@ public class PostController {
 	}
 
 	@GetMapping("/{userId}/followed-posts")
-	public ResponseEntity<List<Post>> getAllPostsFromFollowedUsers(@PathVariable Long userId) {
+	public ResponseEntity<List<PostListDTO>> getAllPostsFromFollowedUsers(@PathVariable Long userId) {
 		List<User> followedUsers = followerService.getAllFollowedUsers(userId);
 		if (followedUsers.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
-		List<Post> postsFromFollowedUsers = postService.getAllPostsByUsers(followedUsers);
+		List<PostListDTO> postsFromFollowedUsers = postService.getAllPostsByUsers(followedUsers);
 		return new ResponseEntity<>(postsFromFollowedUsers, HttpStatus.OK);
 	}
 
@@ -57,7 +58,6 @@ public class PostController {
 		}
 	}
 
-    // API za izmenu posta
 	@PutMapping("/{postId}")
 	public ResponseEntity<Post> updatePost(@RequestParam Long userId, @PathVariable Long postId,
 			@RequestBody PostDTO postDTO) {

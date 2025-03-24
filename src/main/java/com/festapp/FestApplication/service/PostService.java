@@ -3,6 +3,7 @@ package com.festapp.FestApplication.service;
 import java.util.List;
 
 import com.festapp.FestApplication.dto.PostDTO;
+import com.festapp.FestApplication.dto.PostListDTO;
 import com.festapp.FestApplication.models.Post;
 import com.festapp.FestApplication.models.User;
 
@@ -11,7 +12,7 @@ public interface PostService {
 
 	List<Post> getAllPostsByUser(Long userId);
 
-	List<Post> getAllPostsByUsers(List<User> users);
+	List<PostListDTO> getAllPostsByUsers(List<User> users);
 
 	Post createPost(PostDTO post);
 
