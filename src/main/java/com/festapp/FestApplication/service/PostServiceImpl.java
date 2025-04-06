@@ -79,6 +79,11 @@ public class PostServiceImpl implements PostService {
         this.commentRepository = commentRepository;
 
 	}
+	
+	   @Override
+	    public Post getPostById(Long id) {
+	        return postRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found"));
+	    }
 
 	@Override
 	public List<Post> getAllPosts() {
@@ -86,8 +91,11 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<Post> getAllPostsByUser(Long userId) {
-		return postRepository.findByUserId(userId);
+	public List<PostListDTO> getAllPostsByUser(Long userId) {
+		List<Post> posts= postRepository.findByUserId(userId);
+		 return posts.stream()
+		            .map(this::convertToPostListDTO)
+		            .collect(Collectors.toList());
 	}
 
 	@Override

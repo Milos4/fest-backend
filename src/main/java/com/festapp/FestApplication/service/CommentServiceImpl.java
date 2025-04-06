@@ -38,7 +38,6 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	@Transactional
 	public Comment createComment(Long userId, Long postId, CommentDTO commentDTO) {
-		// Proverite da li korisnik postoji
 		User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
 		// Proverite da li post postoji

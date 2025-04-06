@@ -30,8 +30,8 @@ public class PostController {
 	}
 
 	@GetMapping("/{userId}")
-	public ResponseEntity<List<Post>> getAllPostsByUser(@PathVariable Long userId) {
-		List<Post> posts = postService.getAllPostsByUser(userId);
+	public ResponseEntity<List<PostListDTO>> getAllPostsByUser(@PathVariable Long userId) {
+		List<PostListDTO> posts = (List<PostListDTO>) postService.getAllPostsByUser(userId);
 		if (posts.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}

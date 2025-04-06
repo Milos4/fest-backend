@@ -8,9 +8,12 @@ import com.festapp.FestApplication.models.Post;
 import com.festapp.FestApplication.models.User;
 
 public interface PostService {
+	
+    Post getPostById(Long id);
+
 	List<Post> getAllPosts();
 
-	List<Post> getAllPostsByUser(Long userId);
+	List<PostListDTO> getAllPostsByUser(Long userId);
 
 	List<PostListDTO> getAllPostsByUsers(List<User> users);
 
