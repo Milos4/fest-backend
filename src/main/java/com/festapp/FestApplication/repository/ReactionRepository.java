@@ -13,4 +13,6 @@ import com.festapp.FestApplication.models.User;
 public interface ReactionRepository extends JpaRepository<Reaction, Long> {
 	Optional<Reaction> findByUserAndPost(User user, Post post);
 
+	void deleteByPostId(Long postId);
+
 }

@@ -17,10 +17,14 @@ public interface PostService {
 
 	List<PostListDTO> getAllPostsByUsers(List<User> users);
 
+	long countPostsByUser(Long userId);
+
 	Post createPost(PostDTO post);
 
 	Post updatePost(Long userId, Long postId, String newContent);
 
 	void deletePost(Long userId, Long postId);
+
+	void deletePost(Long postId);
 
 }

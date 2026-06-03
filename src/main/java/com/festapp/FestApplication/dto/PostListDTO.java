@@ -10,6 +10,7 @@ public class PostListDTO {
 	private List<String> tags;
 	private String user;
 	private Long userId;
+	private String userProfilePictureUrl;
 	private List<CommentDTO> comments;
 	private List<ReactionDTO> reactions;
 	private Date creationDate;
@@ -60,6 +61,14 @@ public class PostListDTO {
 
 	public void setUser(String user) {
 		this.user = user;
+	}
+
+	public String getUserProfilePictureUrl() {
+		return userProfilePictureUrl;
+	}
+
+	public void setUserProfilePictureUrl(String userProfilePictureUrl) {
+		this.userProfilePictureUrl = userProfilePictureUrl;
 	}
 
 	public List<CommentDTO> getComments() {

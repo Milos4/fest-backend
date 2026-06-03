@@ -14,6 +14,7 @@ public class UserEvent {
     private String description;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+    private String city;
     private String location;
     private Double latitude;
     private Double longitude; 
@@ -92,6 +93,14 @@ public class UserEvent {
 
 	public String getLocation() {
 		return location;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	public void setLocation(String location) {

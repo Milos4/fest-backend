@@ -64,11 +64,14 @@ public class PostController {
 		return ResponseEntity.ok(postService.updatePost(userId, postId, postDTO.getContent()));
 	}
 
-	// API za brisanje posta
 	@DeleteMapping("/{postId}")
-	public ResponseEntity<String> deletePost(@RequestParam Long userId, @PathVariable Long postId) {
-		postService.deletePost(userId, postId);
-		return ResponseEntity.ok("Post deleted successfully");
+	public ResponseEntity<Void> deletePost(@PathVariable Long postId) {
+		try {
+			postService.deletePost(postId);
+			return ResponseEntity.noContent().build();
+		} catch (IllegalArgumentException ex) {
+			return ResponseEntity.notFound().build();
+		}
 	}
 
 }

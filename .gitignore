@@ -1,5 +1,10 @@
 HELP.md
 target/
+.m2/
+backend.err.log
+backend.out.log
+run-backend.cmd
+run-backend.ps1
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/

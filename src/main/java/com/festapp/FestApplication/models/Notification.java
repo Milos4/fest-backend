@@ -16,6 +16,7 @@ public class Notification {
     private String content;
 
     @Enumerated(EnumType.STRING)
+    @Column(length = 50)
     private NotificationType type;
 
     private LocalDateTime createdAt;
@@ -87,6 +88,7 @@ public class Notification {
         FOLLOW_REQUEST,
         FOLLOW_ACCEPTED,
         ACCEPTED_ON_EVENT,
+        EVENT_REQUEST,
         FOLLOW,
         // Add more types as needed
     }

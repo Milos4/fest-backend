@@ -7,6 +7,7 @@ public class CommentDTO {
 	private String content;
 	private String username;
 	private Long userID;
+	private String userProfilePictureUrl;
 
 	public CommentDTO() {
 
@@ -17,6 +18,9 @@ public class CommentDTO {
 		this.content = comment.getContent();
 		this.username = comment.getUser().getUsername();
 		this.userID = comment.getUser().getId();
+		if (comment.getUser().getBio() != null) {
+			this.userProfilePictureUrl = comment.getUser().getBio().getProfilePictureUrl();
+		}
 	}
 
 	public Long getId() {
@@ -49,6 +53,14 @@ public class CommentDTO {
 
 	public void setUserID(Long userID) {
 		this.userID = userID;
+	}
+
+	public String getUserProfilePictureUrl() {
+		return userProfilePictureUrl;
+	}
+
+	public void setUserProfilePictureUrl(String userProfilePictureUrl) {
+		this.userProfilePictureUrl = userProfilePictureUrl;
 	}
 
 }

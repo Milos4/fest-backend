@@ -16,6 +16,7 @@ import com.festapp.FestApplication.models.Post;
 import com.festapp.FestApplication.models.User;
 import com.festapp.FestApplication.repository.CommentRepository;
 import com.festapp.FestApplication.repository.PostRepository;
+import com.festapp.FestApplication.repository.ReactionRepository;
 import com.festapp.FestApplication.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
@@ -26,6 +27,7 @@ public class PostServiceImpl implements PostService {
 	private final PostRepository postRepository;
 	private final UserRepository userRepository;
 	private final CommentRepository commentRepository;
+	private final ReactionRepository reactionRepository;
 	
 	
 	private PostListDTO convertToPostListDTO(Post post) {
@@ -36,6 +38,9 @@ public class PostServiceImpl implements PostService {
         postListDTO.setTags(post.getTags());
         postListDTO.setUser(post.getUser().getUsername());
         postListDTO.setUserId(post.getUser().getId());
+        if (post.getUser().getBio() != null) {
+            postListDTO.setUserProfilePictureUrl(post.getUser().getBio().getProfilePictureUrl());
+        }
         postListDTO.setCreationDate(post.getCreationDate());
 
         // Setovanje korisničkog imena
@@ -49,6 +54,9 @@ public class PostServiceImpl implements PostService {
                 commentDTO.setContent(comment.getContent());
                 commentDTO.setUsername(comment.getUser().getUsername());
                 commentDTO.setUserID(comment.getUser().getId());
+                if (comment.getUser().getBio() != null) {
+                    commentDTO.setUserProfilePictureUrl(comment.getUser().getBio().getProfilePictureUrl());
+                }
                 return commentDTO;
             })
             .collect(Collectors.toList());
@@ -73,10 +81,12 @@ public class PostServiceImpl implements PostService {
 	
 	
 	@Autowired
-	public PostServiceImpl(PostRepository postRepository, UserRepository userRepository, CommentRepository commentRepository) {
+	public PostServiceImpl(PostRepository postRepository, UserRepository userRepository, CommentRepository commentRepository,
+			ReactionRepository reactionRepository) {
 		this.postRepository = postRepository;
 		this.userRepository = userRepository;
         this.commentRepository = commentRepository;
+		this.reactionRepository = reactionRepository;
 
 	}
 	
@@ -108,6 +118,11 @@ public class PostServiceImpl implements PostService {
             .map(this::convertToPostListDTO)
             .collect(Collectors.toList());
     }
+
+	@Override
+	public long countPostsByUser(Long userId) {
+		return postRepository.countByUserId(userId);
+	}
 
 	@Override
 	public Post createPost(PostDTO postRequest) {
@@ -164,5 +179,16 @@ public class PostServiceImpl implements PostService {
 
 	    // Brišemo sam post
 	    postRepository.delete(post);
+	}
+
+	@Override
+	@Transactional
+	public void deletePost(Long postId) {
+		Post post = postRepository.findById(postId)
+				.orElseThrow(() -> new IllegalArgumentException("Post not found"));
+
+		commentRepository.deleteByPostId(postId);
+		reactionRepository.deleteByPostId(postId);
+		postRepository.delete(post);
 	}
 }

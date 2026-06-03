@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.festapp.FestApplication.dto.BioDTO;
+import com.festapp.FestApplication.dto.UpdateProfileRequest;
 import com.festapp.FestApplication.models.User;
 
 
@@ -15,4 +16,6 @@ public interface UserService {
     User findUserById(long id);
     Optional<BioDTO> getUserBioById(Long userId);
     void updateUserBio(Long userId, BioDTO bioDTO);
+    User updateProfile(Long userId, UpdateProfileRequest request);
+    void changePassword(Long userId, String oldPassword, String newPassword, String confirmNewPassword);
 }
